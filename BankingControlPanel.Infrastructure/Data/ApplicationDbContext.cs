@@ -15,14 +15,25 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Address> Addresses { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(builder);
-        builder.Entity<Client>()
-            .HasOne(c => c.Address)
-            .WithMany()
-            .HasForeignKey(c => c.AddressId)
-            .OnDelete(DeleteBehavior.Cascade);  
-        //temp comment 
+        modelBuilder.Entity<Client>(entity =>
+        {
+            entity.OwnsOne(c => c.Email, email =>
+            {
+                email.Property(e => e.Value).HasColumnName("Email").IsRequired();
+            });
+            entity.OwnsOne(c => c.PersonalId, personalId =>
+            {
+                personalId.Property(p => p.Value).HasColumnName("PersonalId").IsRequired();
+            });
+
+            entity.HasOne(c => c.Address)
+                .WithMany()
+                .HasForeignKey(c => c.AddressId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        base.OnModelCreating(modelBuilder);
     }
 }

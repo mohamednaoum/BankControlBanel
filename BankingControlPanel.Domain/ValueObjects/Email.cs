@@ -6,6 +6,8 @@ public class Email
 {
     public string Value { get; private set; }
 
+    // Parameterless constructor for EF Core
+    private Email() { }
     public Email(string email)
     {
         if (!IsValidEmail(email))
@@ -18,4 +20,6 @@ public class Email
     {
         return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
     }
+    
+  
 }

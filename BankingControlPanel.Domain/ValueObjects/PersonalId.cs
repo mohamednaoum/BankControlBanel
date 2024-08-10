@@ -4,6 +4,8 @@ public class PersonalId
 {
     public string Value { get; private set; }
 
+    // Parameterless constructor for EF Core
+    private PersonalId() { }
     public PersonalId(string personalId)
     {
         if (NotValidPersonalId(personalId))
