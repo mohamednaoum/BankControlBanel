@@ -10,3 +10,8 @@ obj/
 /BankingControlPanel.Application/obj
 /BankingControlPanel.Application/obj
 /BankingControlPanel.Application/obj
+BankingControlPanel.Api/obj/Debug/net8.0/BankingControlPanel.Api.AssemblyInfo.cs
+/BankingControlPanel.Application/obj
+/BankingControlPanel.Domain/obj
+/BankingControlPanel.Domain/obj
+/BankingControlPanel.Api/obj
