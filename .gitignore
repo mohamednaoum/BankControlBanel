@@ -1,3 +1,10 @@
 
 /.idea
 /BankingControlPanel.Application.UnitTests/obj
+/BankingControlPanel.Api/obj
+/BankingControlPanel.Api/obj
+/BankingControlPanel.Application.UnitTests/bin
+/BankingControlPanel.Application/bin
+/BankingControlPanel.Application/obj
+/BankingControlPanel.Application/obj
+/BankingControlPanel.Application/obj

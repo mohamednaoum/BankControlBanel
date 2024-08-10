@@ -19,7 +19,7 @@ public class ClientDto
 
     [Required] [Phone] public string MobileNumber { get; set; }
 
-    [Required] public string Sex { get; set; }
+    [Required] public string Gender { get; set; }
 
     public AddressDto Address { get; set; }
 

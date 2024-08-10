@@ -1,5 +1,6 @@
 using AutoMapper;
 using BankingControlPanel.Application.Interfaces;
+using BankingControlPanel.Application.Mapper;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Infrastructure.Repositories;
 using BankingControlPanel.Shared.Dtos;
@@ -14,7 +15,8 @@ public class ClientService : IClientService
     public ClientService(IClientRepository clientRepository, IMapper mapper)
     {
         _clientRepository = clientRepository;
-        _mapper = mapper;
+        var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
+        _mapper = config.CreateMapper();
     }
 
     public IEnumerable<ClientDto> GetClients(string filter, string sort, int page, int pageSize)
@@ -29,10 +31,11 @@ public class ClientService : IClientService
         return _mapper.Map<ClientDto>(client);
     }
 
-    public void AddClient(ClientDto clientDto)
+    public Task AddClientAsync(ClientDto clientDto)
     {
         var client = _mapper.Map<Client>(clientDto);
         _clientRepository.AddClient(client);
+        return Task.CompletedTask;
     }
 
     public void UpdateClient(int id, ClientDto clientDto)

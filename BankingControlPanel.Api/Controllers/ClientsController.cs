@@ -38,7 +38,7 @@ namespace BankingControlPanel.Api.Controllers
         [HttpPost]
         public IActionResult AddClient([FromBody] ClientDto clientDto)
         {
-            _clientService.AddClient(clientDto);
+            _clientService.AddClientAsync(clientDto);
             return CreatedAtAction(nameof(GetClientById), new { id = clientDto.PersonalId }, clientDto);
         }
 
