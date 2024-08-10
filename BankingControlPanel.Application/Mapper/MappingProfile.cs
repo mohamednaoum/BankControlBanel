@@ -11,7 +11,8 @@ public class MappingProfile : Profile
     {
         // Client to ClientDto mapping
         CreateMap<Client, ClientDto>()
-            .ForMember(dest => dest.Accounts, opt => opt.MapFrom(src => src.Accounts));
+            .ForMember(dest => dest.Accounts, opt => opt.MapFrom(src => src.Accounts))
+            .ForMember(dest=>dest.Email, opt=> opt.MapFrom(src=>src.Email.Value));
 
         // ClientDto to Client mapping
         CreateMap<ClientDto, Client>()

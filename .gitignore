@@ -15,3 +15,4 @@ BankingControlPanel.Api/obj/Debug/net8.0/BankingControlPanel.Api.AssemblyInfo.cs
 /BankingControlPanel.Domain/obj
 /BankingControlPanel.Domain/obj
 /BankingControlPanel.Api/obj
+*.user
