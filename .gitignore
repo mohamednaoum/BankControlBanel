@@ -1,5 +1,7 @@
 
 /.idea
+bin/
+obj/
 /BankingControlPanel.Application.UnitTests/obj
 /BankingControlPanel.Api/obj
 /BankingControlPanel.Api/obj
