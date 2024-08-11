@@ -7,9 +7,9 @@ POST http://localhost:5147/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "user@example.com",
+  "email": "Test@example.com",
   "password": "Password123!",
-  "role": "User"
+  "role": "Admin"
 }
 
 ###
@@ -19,7 +19,7 @@ POST http://localhost:5147/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "user@example.com",
+  "email": "Test@example.com",
   "password": "Password123!"
 }
 
@@ -50,8 +50,8 @@ Content-Type: application/json
   "personalId": "12345678901",
   "profilePhoto": "base64string",
   "mobileNumber": "+1234567890",
-  "sex": "Male",
-  "address": {
+  "Gender": "Male",
+  "address": {  
     "country": "Country",
     "city": "City",
     "street": "Street",

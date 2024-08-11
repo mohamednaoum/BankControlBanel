@@ -43,7 +43,7 @@ namespace BankingControlPanel.Application.UnitTests.MapperTests
                 ),
                 Accounts = new List<Account>
                 {
-                    new Account { AccountNumber = "123456789", Balance = 1000 }
+                    new Account { Balance = 1000 }
                 }
             };
 
@@ -52,19 +52,18 @@ namespace BankingControlPanel.Application.UnitTests.MapperTests
 
             // Assert
             Assert.Equal(client.Email.Value, clientDto.Email);
-            // Assert.Equal(client.FirstName, clientDto.FirstName);
-            // Assert.Equal(client.LastName, clientDto.LastName);
-            // Assert.Equal(client.PersonalId.Value, clientDto.PersonalId);
-            // Assert.Equal(client.ProfilePhoto, clientDto.ProfilePhoto);
-            // Assert.Equal(client.MobileNumber, clientDto.MobileNumber);
-            // Assert.Equal(client.Gender.ToString(), clientDto.Gender);
-            // Assert.Equal(client.Address.Country, clientDto.Address.Country);
-            // Assert.Equal(client.Address.City, clientDto.Address.City);
-            // Assert.Equal(client.Address.Street, clientDto.Address.Street);
-            // Assert.Equal(client.Address.ZipCode, clientDto.Address.ZipCode);
-            // Assert.Single(clientDto.Accounts);
-            // Assert.Equal(client.Accounts[0].AccountNumber, clientDto.Accounts[0].AccountNumber);
-            // Assert.Equal(client.Accounts[0].Balance, clientDto.Accounts[0].Balance);
+            Assert.Equal(client.FirstName, clientDto.FirstName);
+            Assert.Equal(client.LastName, clientDto.LastName);
+            Assert.Equal(client.PersonalId.Value, clientDto.PersonalId);
+            Assert.Equal(client.ProfilePhoto, clientDto.ProfilePhoto);
+            Assert.Equal(client.MobileNumber, clientDto.MobileNumber);
+            Assert.Equal(client.Gender.ToString(), clientDto.Gender);
+            Assert.Equal(client.Address.Country, clientDto.Address.Country);
+            Assert.Equal(client.Address.City, clientDto.Address.City);
+            Assert.Equal(client.Address.Street, clientDto.Address.Street);
+            Assert.Equal(client.Address.ZipCode, clientDto.Address.ZipCode);
+            Assert.Single(clientDto.Accounts);
+            Assert.Equal(client.Accounts[0].Balance, clientDto.Accounts[0].Balance);
         }
 
         [Fact]
@@ -109,7 +108,6 @@ namespace BankingControlPanel.Application.UnitTests.MapperTests
             Assert.Equal(clientDto.Address.Street, client.Address.Street);
             Assert.Equal(clientDto.Address.ZipCode, client.Address.ZipCode);
             Assert.Single(client.Accounts);
-            Assert.Equal(clientDto.Accounts[0].AccountNumber, client.Accounts[0].AccountNumber);
             Assert.Equal(clientDto.Accounts[0].Balance, client.Accounts[0].Balance);
         }
 
@@ -119,7 +117,6 @@ namespace BankingControlPanel.Application.UnitTests.MapperTests
             // Arrange
             var account = new Account
             {
-                AccountNumber = "123456789",
                 Balance = 1000
             };
 
@@ -127,7 +124,6 @@ namespace BankingControlPanel.Application.UnitTests.MapperTests
             var accountDto = _mapper.Map<AccountDto>(account);
 
             // Assert
-            Assert.Equal(account.AccountNumber, accountDto.AccountNumber);
             Assert.Equal(account.Balance, accountDto.Balance);
         }
 
@@ -145,7 +141,6 @@ namespace BankingControlPanel.Application.UnitTests.MapperTests
             var account = _mapper.Map<Account>(accountDto);
 
             // Assert
-            Assert.Equal(accountDto.AccountNumber, account.AccountNumber);
             Assert.Equal(accountDto.Balance, account.Balance);
         }
 

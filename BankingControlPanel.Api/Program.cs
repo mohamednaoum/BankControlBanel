@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using BankingControlPanel.Application.Interfaces;
 using BankingControlPanel.Application.Mapper;
 using BankingControlPanel.Application.Services;
@@ -23,7 +25,13 @@ builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 // Configure controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Configure JSON to serialize enums as strings using camel case
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 
 // Configure Swagger
 builder.Services.AddEndpointsApiExplorer();
