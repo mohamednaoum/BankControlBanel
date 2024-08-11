@@ -80,8 +80,27 @@ Ensure you have the following installed on your system:
 
 3. **Verify Database Changes**: Use DBeaver to connect to the database and verify that the tables and schema are created as expected.
 
-### Troubleshooting
+## Accessing and Using Swagger UI
 
-- **Docker Resource Allocation**: If you face performance issues, ensure Docker has enough resources allocated (CPU, memory) in Docker Desktop settings.
-- **Network Conflicts**: Ensure no other services are using port 1433.
+### Accessing Swagger UI
+
+1. **Open Browser**: Launch your web browser.
+
+2. **Navigate to Swagger UI**: Enter the following URL in the address bar:
+
+   ```
+   http://localhost:5147/swagger/index.html
+   ```
+
+   This URL will display the Swagger UI, where you can interact with your API endpoints.
+
+### Trying API Requests
+
+1. **Explore Endpoints**: Swagger UI provides an interactive interface to view and test all available API endpoints in your application.
+
+2. **Test API Endpoints**:
+
+   - Click on an endpoint to expand its details.
+   - Fill in any required parameters or request bodies.
+   - Click **"Try it out"** to execute the request and view the response directly in the browser.
 
