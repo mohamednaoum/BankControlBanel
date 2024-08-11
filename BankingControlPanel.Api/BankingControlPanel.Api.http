@@ -3,7 +3,7 @@
 ###
 # group: Auth
 # @name Register
-POST http://localhost/api/auth/register
+POST http://localhost:5147/api/auth/register
 Content-Type: application/json
 
 {
@@ -15,7 +15,7 @@ Content-Type: application/json
 ###
 # group: Auth
 # @name Login
-POST http://localhost/api/auth/login
+POST http://localhost:5147/api/auth/login
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 ###
 # group: Clients
 # @name Get Clients
-GET http://localhost/api/clients?
+GET http://localhost:5147/api/clients?
     filter=&
     sort=&
     page=1&
@@ -35,12 +35,12 @@ GET http://localhost/api/clients?
 ###
 # group: Clients
 # @name Get Client by ID
-GET http://localhost/api/clients/{{id}}
+GET http://localhost:5147/api/clients/{{id}}
 
 ###
 # group: Clients
 # @name Add Client
-POST http://localhost/api/clients
+POST http://localhost:5147/api/clients
 Content-Type: application/json
 
 {
@@ -68,7 +68,7 @@ Content-Type: application/json
 ###
 # group: Clients
 # @name Update Client
-PUT http://localhost/api/clients/{{id_1}}
+PUT http://localhost:5147/api/clients/{{id_1}}
 Content-Type: application/json
 
 {
@@ -96,4 +96,4 @@ Content-Type: application/json
 ###
 # group: Clients
 # @name Delete Client
-DELETE http://localhost/api/clients/{{id_2}}
+DELETE http://localhost:5147/api/clients/{{id_2}}
