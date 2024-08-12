@@ -1,6 +1,6 @@
 using BankingControlPanel.Domain.Models;
 
-namespace BankingControlPanel.Infrastructure.Repositories;
+namespace BankingControlPanel.Interfaces.Repositories;
 
 public interface IClientRepository
 {

@@ -12,12 +12,12 @@ public class MappingProfile : Profile
         // Client to ClientDto mapping
         CreateMap<Client, ClientDto>()
             .ForMember(dest => dest.Accounts, opt => opt.MapFrom(src => src.Accounts))
-            .ForMember(dest=>dest.Email, opt=> opt.MapFrom(src=>src.Email.Value));
+            .ForMember(dest=>dest.Email, opt=> opt.MapFrom(src=>src.Email.Value))
+            .ForMember(dest=>dest.PersonalId, opt=> opt.MapFrom(src=>src.PersonalId.Value));;
 
         // ClientDto to Client mapping
         CreateMap<ClientDto, Client>()
             .ForMember(dest => dest.Accounts, opt => opt.MapFrom(src => src.Accounts));
-
         // Account to AccountDto mapping
         CreateMap<Account, AccountDto>();
 

@@ -2,6 +2,7 @@ using AutoMapper;
 using BankingControlPanel.Application.Mapper;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Infrastructure.Repositories;
+using BankingControlPanel.Interfaces.Repositories;
 using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
 

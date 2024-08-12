@@ -6,6 +6,7 @@ using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Infrastructure.Data;
 using BankingControlPanel.Infrastructure.Repositories;
 using BankingControlPanel.Infrastructure.Services;
+using BankingControlPanel.Interfaces.Repositories;
 using BankingControlPanel.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,10 @@ builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 builder.Services.AddMemoryCache(); // Add the memory cache service
 builder.Services.AddScoped<ICacheService, MemoryCacheService>();
+builder.Services.AddScoped<ISearchCriteriaRepository, SearchCriteriaRepository>(); 
+builder.Services.AddScoped<ISearchCriteriaService,SearchCriteriaService>(); 
+
+
 
 
 // Configure controllers
