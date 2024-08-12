@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using BankingControlPanel.Application.Interfaces;
+using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
 
 namespace BankingControlPanel.Api.Controllers

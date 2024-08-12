@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BankingControlPanel.Domain\BankingControlPanel.Domain.csproj" />
+      <ProjectReference Include="..\BankingControlPanel.Interfaces\BankingControlPanel.Interfaces.csproj" />
     </ItemGroup>
 
 </Project>

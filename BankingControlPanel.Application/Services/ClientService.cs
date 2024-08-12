@@ -1,8 +1,8 @@
 using AutoMapper;
-using BankingControlPanel.Application.Interfaces;
 using BankingControlPanel.Application.Mapper;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Infrastructure.Repositories;
+using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
 
 namespace BankingControlPanel.Application.Services;

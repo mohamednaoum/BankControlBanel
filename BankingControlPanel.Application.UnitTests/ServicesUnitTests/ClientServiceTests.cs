@@ -1,14 +1,14 @@
 using AutoMapper;
-using BankingControlPanel.Application.Interfaces;
 using BankingControlPanel.Application.Services;
 using BankingControlPanel.Domain.Enums;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Domain.ValueObjects;
 using BankingControlPanel.Infrastructure.Repositories;
+using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
 using Moq;
 
-namespace BankingControlPanel.Application.UnitTests
+namespace BankingControlPanel.Application.UnitTests.ServicesUnitTests
 {
     public class ClientServiceTests
     {

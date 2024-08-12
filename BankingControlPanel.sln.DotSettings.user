@@ -5,5 +5,6 @@
     &lt;TestId&gt;xUnit::223AA3F3-5C37-404D-A364-95F27BD49FF7::net8.0::BankingControlPanel.Application.UnitTests.AuthServiceTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::223AA3F3-5C37-404D-A364-95F27BD49FF7::net8.0::BankingControlPanel.Application.UnitTests.MapperTests.MappingProfileTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::5F8CE57F-209D-454A-944E-AC9B282869B2::net8.0::BankingControlPanel.Infrastructure.UnitTests.ClientRepositoryTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::5F8CE57F-209D-454A-944E-AC9B282869B2::net8.0::BankingControlPanel.Infrastructure.UnitTests.ServicesUnitTests.MemoryCacheServiceTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

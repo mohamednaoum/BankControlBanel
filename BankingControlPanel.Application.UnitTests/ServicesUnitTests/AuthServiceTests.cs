@@ -1,12 +1,12 @@
-using BankingControlPanel.Application.Interfaces;
 using BankingControlPanel.Application.Services;
 using BankingControlPanel.Domain.Enums;
 using BankingControlPanel.Domain.Models;
+using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 
-namespace BankingControlPanel.Application.UnitTests
+namespace BankingControlPanel.Application.UnitTests.ServicesUnitTests
 {
     public class AuthServiceTests
     {

@@ -1,6 +1,6 @@
 using BankingControlPanel.Shared.Dtos;
 
-namespace BankingControlPanel.Application.Interfaces;
+namespace BankingControlPanel.Interfaces.Services;
 
 public interface IClientService
 {

@@ -1,7 +1,7 @@
 using BankingControlPanel.Shared.Dtos;
 using Microsoft.AspNetCore.Identity;
 
-namespace BankingControlPanel.Application.Interfaces;
+namespace BankingControlPanel.Interfaces.Services;
 
 public interface IAuthService
 {

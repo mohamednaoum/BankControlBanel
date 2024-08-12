@@ -1,5 +1,5 @@
-using BankingControlPanel.Application.Interfaces;
 using BankingControlPanel.Domain.Models;
+using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
 using Microsoft.AspNetCore.Identity;
 

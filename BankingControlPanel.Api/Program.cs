@@ -1,11 +1,12 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using BankingControlPanel.Application.Interfaces;
 using BankingControlPanel.Application.Mapper;
 using BankingControlPanel.Application.Services;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Infrastructure.Data;
 using BankingControlPanel.Infrastructure.Repositories;
+using BankingControlPanel.Infrastructure.Services;
+using BankingControlPanel.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Services.AddMemoryCache(); // Add the memory cache service
+builder.Services.AddScoped<ICacheService, MemoryCacheService>();
+
 
 // Configure controllers
 builder.Services.AddControllers()

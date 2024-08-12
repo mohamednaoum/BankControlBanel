@@ -14,6 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Client> Clients { get; set; }
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Address> Addresses { get; set; }
+    public DbSet<SearchCriteria> SearchCriterias { get; set; } 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

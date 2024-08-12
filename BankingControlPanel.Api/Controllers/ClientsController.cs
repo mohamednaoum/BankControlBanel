@@ -1,6 +1,6 @@
+using BankingControlPanel.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BankingControlPanel.Application.Interfaces;
 using BankingControlPanel.Shared.Dtos;
 
 namespace BankingControlPanel.Api.Controllers

@@ -1,11 +1,10 @@
-using System.Text.Json.Serialization;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Domain.ValueObjects;
 using BankingControlPanel.Infrastructure.Data;
 using BankingControlPanel.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankingControlPanel.Infrastructure.UnitTests
+namespace BankingControlPanel.Infrastructure.UnitTests.RepositoryUnitTests
 {
     public class ClientRepositoryTests
     {
