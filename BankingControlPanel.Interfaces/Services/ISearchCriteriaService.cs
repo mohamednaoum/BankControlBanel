@@ -4,6 +4,6 @@ namespace BankingControlPanel.Interfaces.Services;
 
 public interface ISearchCriteriaService
 {
-    Task SaveSearchCriteriaAsync(string criteria);
-    Task<IEnumerable<SearchCriteria>> GetLastSearchCriteriasAsync(int count);
+    Task SaveSearchCriteriaAsync(string criteria, string userId);
+    Task<IEnumerable<SearchCriteria>> GetLastSearchCriteriasAsync(int count, string userId);
 }

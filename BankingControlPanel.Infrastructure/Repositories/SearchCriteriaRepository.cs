@@ -20,9 +20,9 @@ public class SearchCriteriaRepository : ISearchCriteriaRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<SearchCriteria>> GetLastSearchCriteriasAsync(int count)
+    public async Task<IEnumerable<SearchCriteria>> GetLastSearchCriteriasAsync(int count, string userId)
     {
-        return await _context.SearchCriterias
+        return await _context.SearchCriterias.Where(x=>x.UserId== userId)
             .OrderByDescending(sc => sc.CreatedAt)
             .Take(count)
             .ToListAsync();

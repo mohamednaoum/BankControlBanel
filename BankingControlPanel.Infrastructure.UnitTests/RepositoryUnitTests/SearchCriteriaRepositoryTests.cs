@@ -23,7 +23,7 @@ public class SearchCriteriaRepositoryTests
     public async Task AddSearchCriteriaAsync_ShouldAddSearchCriteriaToDatabase()
     {
         // Arrange
-        var searchCriteria = new SearchCriteria { Criteria = "Test Criteria" };
+        var searchCriteria = new SearchCriteria { Criteria = "Test Criteria", UserId = "123"};
 
         // Act
         await _repository.AddSearchCriteriaAsync(searchCriteria);
@@ -31,20 +31,21 @@ public class SearchCriteriaRepositoryTests
         // Assert
         Assert.Equal(1, _context.SearchCriterias.Count());
         Assert.Equal(searchCriteria.Criteria, _context.SearchCriterias.Single().Criteria);
+        Assert.Equal(searchCriteria.UserId, _context.SearchCriterias.Single().UserId);
     }
 
     [Fact]
     public async Task GetLastSearchCriteriasAsync_ShouldReturnSearchCriterias()
     {
         // Arrange
-        _context.SearchCriterias.Add(new SearchCriteria { Criteria = "Criteria 1" });
-        _context.SearchCriterias.Add(new SearchCriteria { Criteria = "Criteria 2" });
+        _context.SearchCriterias.Add(new SearchCriteria { Criteria = "Criteria 1", UserId = "1111"});
+        _context.SearchCriterias.Add(new SearchCriteria { Criteria = "Criteria 2" , UserId = "456"});
         await _context.SaveChangesAsync();
 
         // Act
-        var result = await _repository.GetLastSearchCriteriasAsync(2);
+        var result = await _repository.GetLastSearchCriteriasAsync(2, "1111");
 
         // Assert
-        Assert.Equal(2, result.Count());
+        Assert.Single(result);
     }
 }
