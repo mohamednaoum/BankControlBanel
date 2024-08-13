@@ -12,9 +12,9 @@ namespace BankingControlPanel.Api.Controllers
     public class ClientsController(IClientService clientService) : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetClients([FromQuery] string filter, [FromQuery] string sort, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetClients([FromQuery] string filter, [FromQuery] string sort, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var clients = clientService.GetClients(filter, sort, page, pageSize, User.GetUserId()!);
+            var clients = await clientService.GetClients(filter, sort, page, pageSize, User.GetUserId()!);
             return Ok(clients);
         }
 

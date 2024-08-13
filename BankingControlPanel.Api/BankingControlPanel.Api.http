@@ -27,8 +27,8 @@ Content-Type: application/json
 # group: Clients
 # @name Get Clients
 GET http://localhost:5147/api/clients?
-    filter=&
-    sort=&
+    filter=John&
+    sort=asc&
     page=1&
     pageSize=10
 
@@ -44,8 +44,8 @@ POST http://localhost:5147/api/clients
 Content-Type: application/json
 
 {
-  "firstName": "John",
-  "lastName": "Doe",
+  "firstName": "Johnx",
+  "lastName": "Doex",
   "email": "john.doe@example.com",
   "personalId": "12345678901",
   "profilePhoto": "base64string",
