@@ -4,12 +4,43 @@
 
 This project It uses SQL Server as the database and Entity Framework Core for ORM. This guide provides instructions for setting up the database on a Mac using Docker and DBeaver and managing migrations with Entity Framework Core.
 
+## Project Structure
+````
+/BankingControlPanel
+|-- /src
+|   |-- /BankingControlPanel.Api
+|   |   |-- Controllers - Handles HTTP requests, routing them to service layers.
+|   |   |-- Helpers - Provides utilities to assist controllers and other parts of the API.
+|   |   |-- Program.cs - Entrypoint for setting up a web host and running the application.
+|   |   |-- Startup.cs - Configures services and the application's request pipeline.
+|   |-- /BankingControlPanel.Application
+|   |   |-- Services - Core services implementing the application logic.
+|   |   |-- Mapper - Maps data entities to DTOs and vice versa.
+|   |-- /BankingControlPanel.Domain
+|   |   |-- Models - Represents data and business rules.
+|   |   |-- Enums - Enumerations to support models with static lists of values.
+|   |   |-- ValueObjects - Encapsulates small pieces of domain logic.
+|   |-- /BankingControlPanel.Infrastructure
+|   |   |-- Data - Database contexts and data configurations.
+|   |   |-- Migrations - Database migration scripts for deployment and updates.
+|   |   |-- Repositories - Data access layers that communicate with databases.
+|   |   |-- Services - Implements infrastructure-bound services like caching.
+|   |-- /BankingControlPanel.Interfaces
+|   |   |-- Repositories - Interfaces for data access layers.
+|   |   |-- Services - Interfaces for application service layers.
+|-- /tests
+|   |-- /BankingControlPanel.UnitTests
+|   |   |-- MapperTests - Tests for the data mapping functionalities.
+|   |   |-- ServicesUnitTests - Tests for business logic services.
+|-- /docs
+|-- README.md
+````
 ## Prerequisites
 
 Ensure you have the following installed on your system:
 
-- **Docker Desktop**: [Download and Install Docker Desktop](https://www.docker.com/products/docker-desktop) for macOS.
-- **DBeaver**: [Download and Install DBeaver](https://dbeaver.io/download/) for macOS.
+- **Docker Desktop**: [Download and Install Docker Desktop](https://www.docker.com/products/docker-desktop).
+- **DBeaver**: [Download and Install DBeaver](https://dbeaver.io/download/) .
 - **.NET SDK**: [Download and Install .NET SDK](https://dotnet.microsoft.com/download) (.NET8).
 
 ## Setup Instructions
