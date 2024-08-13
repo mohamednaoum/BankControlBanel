@@ -4,53 +4,64 @@ using BankingControlPanel.Interfaces.Repositories;
 
 namespace BankingControlPanel.Infrastructure.Repositories;
 
-public class ClientRepository : IClientRepository
+public class ClientRepository(ApplicationDbContext context) : IClientRepository
 {
-    private readonly ApplicationDbContext _context;
-
-    public ClientRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     public IEnumerable<Client> GetClients(string filter, string sort, int page, int pageSize)
     {
-        var query = _context.Clients.AsQueryable();
+        var query = context.Clients.AsQueryable();
 
         if (!string.IsNullOrEmpty(filter))
         {
             query = query.Where(c => c.FirstName.Contains(filter) || c.LastName.Contains(filter));
         }
 
-        // Sorting and paging logic
+        query = SortResult(sort, query);
 
         return query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
     }
 
+    private static IQueryable<Client> SortResult(string sort, IQueryable<Client> query)
+    {
+        switch (sort?.ToLower())
+        {
+            case "asc":
+                query = query.OrderBy(c => c.Id);
+                break;
+            case "desc":
+                query = query.OrderByDescending(c => c.Id);
+                break;
+            default:
+                query = query.OrderBy(c => c.Id); 
+                break;
+        }
+
+        return query;
+    }
+
     public Client GetClientById(int id)
     {
-        return _context.Clients.Find(id);
+        return context.Clients.Find(id);
     }
 
     public void AddClient(Client client)
     {
-        _context.Clients.Add(client);
-        _context.SaveChanges();
+        context.Clients.Add(client);
+        context.SaveChanges();
     }
 
     public void UpdateClient(Client client)
     {
-        _context.Clients.Update(client);
-        _context.SaveChanges();
+        context.Clients.Update(client);
+        context.SaveChanges();
     }
 
     public void DeleteClient(int id)
     {
-        var client = _context.Clients.Find(id);
+        var client = context.Clients.Find(id);
         if (client != null)
         {
-            _context.Clients.Remove(client);
-            _context.SaveChanges();
+            context.Clients.Remove(client);
+            context.SaveChanges();
         }
     }
 

@@ -9,13 +9,26 @@ public class SearchCriteriaService(ISearchCriteriaRepository searchCriteriaRepos
 {
     public async Task SaveSearchCriteriaAsync(string criteria, string userId)
     {
-        var searchCriteria = new SearchCriteria { Criteria = criteria, UserId = userId};
+        var searchCriteria = new SearchCriteria { Criteria = criteria, UserId = userId };
         await searchCriteriaRepository.AddSearchCriteriaAsync(searchCriteria);
     }
 
     public async Task<IEnumerable<SearchCriteria>> GetLastSearchCriteriasAsync(int count, string userId)
     {
         var cacheKey = $"LastSearchCriterias_{userId}";
-        return await cacheService.GetOrAddAsync(cacheKey, async () => await searchCriteriaRepository.GetLastSearchCriteriasAsync(count, userId));
+
+        var cachedCriteria = await cacheService.GetFromCacheAsync<IEnumerable<SearchCriteria>>(cacheKey);
+    
+        if (cachedCriteria != null)
+        {
+            return cachedCriteria;
+        }
+
+        var lastSearchCriterias = await searchCriteriaRepository.GetLastSearchCriteriasAsync(count, userId);
+
+        cacheService.Set(cacheKey, lastSearchCriterias);
+
+        return lastSearchCriterias;
     }
+
 }

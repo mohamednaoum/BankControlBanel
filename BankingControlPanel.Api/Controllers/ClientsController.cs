@@ -1,3 +1,4 @@
+using BankingControlPanel.Api.Helpers;
 using BankingControlPanel.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,26 +9,19 @@ namespace BankingControlPanel.Api.Controllers
     [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
-    public class ClientsController : ControllerBase
+    public class ClientsController(IClientService clientService) : ControllerBase
     {
-        private readonly IClientService _clientService;
-
-        public ClientsController(IClientService clientService)
-        {
-            _clientService = clientService;
-        }
-
         [HttpGet]
         public IActionResult GetClients([FromQuery] string filter, [FromQuery] string sort, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var clients = _clientService.GetClients(filter, sort, page, pageSize);
+            var clients = clientService.GetClients(filter, sort, page, pageSize, User.GetUserId()!);
             return Ok(clients);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetClientById(int id)
         {
-            var client = _clientService.GetClientById(id);
+            var client = clientService.GetClientById(id);
             if (client == null)
             {
                 return NotFound();
@@ -38,28 +32,28 @@ namespace BankingControlPanel.Api.Controllers
         [HttpPost]
         public IActionResult AddClient([FromBody] ClientDto clientDto)
         {
-            _clientService.AddClientAsync(clientDto);
+            clientService.AddClientAsync(clientDto);
             return CreatedAtAction(nameof(GetClientById), new { id = clientDto.PersonalId }, clientDto);
         }
 
         [HttpPut("{id}")]
         public IActionResult UpdateClient(int id, [FromBody] ClientDto clientDto)
         {
-            _clientService.UpdateClient(id, clientDto);
+            clientService.UpdateClient(id, clientDto);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteClient(int id)
         {
-            _clientService.DeleteClient(id);
+            clientService.DeleteClient(id);
             return NoContent();
         }
 
         [HttpGet("search-parameters")]
         public IActionResult GetLastSearchParameters([FromQuery] int count = 3)
         {
-            var parameters = _clientService.GetLastSearchParameters(count);
+            var parameters = clientService.GetLastSearchParameters(count);
             return Ok(parameters);
         }
     }

@@ -6,13 +6,44 @@ using BankingControlPanel.Shared.Dtos;
 
 namespace BankingControlPanel.Application.Services;
 
-public class ClientService(IClientRepository clientRepository, IMapper mapper) : IClientService
+public class ClientService(IClientRepository clientRepository, ISearchCriteriaService searchCriteriaService, ICacheService cacheService ,IMapper mapper) : IClientService
 {
-    public IEnumerable<ClientDto> GetClients(string filter, string sort, int page, int pageSize)
+    public async Task<IEnumerable<ClientDto>> GetClients(string filter, string sort, int page, int pageSize, string userId)
     {
+        var cacheKey = GenerateCacheKey(filter, sort, page, pageSize, userId);
+
+        var cachedClients = await GetCachedClientsAsync(cacheKey);
+        if (cachedClients.Any())
+        {
+            return cachedClients;
+        }
+
         var clients = clientRepository.GetClients(filter, sort, page, pageSize);
-        return mapper.Map<IEnumerable<ClientDto>>(clients);
+        var clientDtos = mapper.Map<IEnumerable<ClientDto>>(clients);
+
+        SaveClientsToCache(cacheKey, clientDtos);
+        await searchCriteriaService.SaveSearchCriteriaAsync($"{filter}_{sort}_{page}_{pageSize}", userId);
+
+        return clientDtos;
     }
+
+    private string GenerateCacheKey(string filter, string sort, int page, int pageSize, string userId)
+    {
+        return $"Clients_{userId}_{filter}_{sort}_{page}_{pageSize}";
+    }
+
+    private async Task<IEnumerable<ClientDto>> GetCachedClientsAsync(string cacheKey)
+    {
+        var cachedClients = await cacheService.GetFromCacheAsync<IEnumerable<ClientDto>>(cacheKey);
+        return cachedClients ?? Enumerable.Empty<ClientDto>();
+    }
+
+    private void SaveClientsToCache(string cacheKey, IEnumerable<ClientDto> clientDtos)
+    {
+       
+        cacheService.Set(cacheKey, clientDtos);
+    }
+
 
     public ClientDto GetClientById(int id)
     {

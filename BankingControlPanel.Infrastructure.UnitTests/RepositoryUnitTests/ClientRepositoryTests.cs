@@ -8,22 +8,12 @@ namespace BankingControlPanel.Infrastructure.UnitTests.RepositoryUnitTests
 {
     public class ClientRepositoryTests
     {
-        private readonly DbContextOptions<ApplicationDbContext> _dbContextOptions;
-
-        public ClientRepositoryTests()
-        {
-            _dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
-        }
-
-        private ApplicationDbContext CreateContext() => new ApplicationDbContext(_dbContextOptions);
-
+        
         [Fact]
         public void GetClients_ShouldReturnClients_WithCorrectFilterAndPaging()
         {
             // Arrange
-            using var context = CreateContext();
+            using var context = CreateContext("TestDatabaseForFilter");
             context.Clients.AddRange(
                 new Client { FirstName = "John", LastName = "Doe" , Email = new Email("john.doe@test.com") ,
                     PersonalId = new PersonalId("12345678901"),
@@ -43,10 +33,10 @@ namespace BankingControlPanel.Infrastructure.UnitTests.RepositoryUnitTests
             var repository = new ClientRepository(context);
 
             // Act
-            var result = repository.GetClients("John", null, 1, 10);
+            var result = repository.GetClients("John", null, 1, 1);
 
             // Assert
-            Assert.Equal(2, result.Count());
+            Assert.Single(result);
             Assert.All(result, c => Assert.Contains("John", c.FirstName));
         }
 
@@ -54,7 +44,7 @@ namespace BankingControlPanel.Infrastructure.UnitTests.RepositoryUnitTests
         public void GetClientById_ShouldReturnCorrectClient()
         {
             // Arrange
-            using var context = CreateContext();
+            using var context = CreateContext("TestDatabaseForGet");
             var client = new Client { FirstName = "John", LastName = "Doe", Email = new Email("john.doe@test.com") ,
                 PersonalId = new PersonalId("12345678901"),
                 MobileNumber = "12345",
@@ -77,7 +67,7 @@ namespace BankingControlPanel.Infrastructure.UnitTests.RepositoryUnitTests
         public void AddClient_ShouldAddClientToDatabase()
         {
             // Arrange
-            using var context = CreateContext();
+            using var context = CreateContext("TestDatabaseForAdd");
             var repository = new ClientRepository(context);
             var client = new Client 
             { 
@@ -104,7 +94,7 @@ namespace BankingControlPanel.Infrastructure.UnitTests.RepositoryUnitTests
         public void UpdateClient_ShouldModifyClientInDatabase()
         {
             // Arrange
-            using var context = CreateContext();
+            using var context = CreateContext("TestDatabaseForUpdate");
             var client = new Client { FirstName = "John", LastName = "Doe" , Email = new Email("john.doe@test.com") ,
                 PersonalId = new PersonalId("12345678901"),
                 MobileNumber = "12345",
@@ -127,7 +117,7 @@ namespace BankingControlPanel.Infrastructure.UnitTests.RepositoryUnitTests
         public void DeleteClient_ShouldRemoveClientFromDatabase()
         {
             // Arrange
-            using var context = CreateContext();
+            using var context = CreateContext("TestDatabaseForDelete");
             var client = new Client { FirstName = "John", LastName = "Doe", Email = new Email("john.doe@test.com") ,
                 PersonalId = new PersonalId("12345678901"),
                 MobileNumber = "12345",
@@ -143,19 +133,9 @@ namespace BankingControlPanel.Infrastructure.UnitTests.RepositoryUnitTests
             // Assert
             Assert.Empty(context.Clients);
         }
-
-        [Fact]
-        public void GetLastSearchParameters_ShouldReturnLastSearchParameters()
-        {
-            // Arrange
-            using var context = CreateContext();
-            var repository = new ClientRepository(context);
-
-            // Act
-            var result = repository.GetLastSearchParameters(3);
-
-            // Assert
-            Assert.Empty(result); // Since logic is not implemented, expected result is empty.
-        }
+        
+        private ApplicationDbContext CreateContext(string databaseName) => new(new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(databaseName: databaseName)
+            .Options);
     }
 }

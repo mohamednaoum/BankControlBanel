@@ -1,9 +1,9 @@
 using AutoMapper;
+using BankingControlPanel.Application.Mapper;
 using BankingControlPanel.Application.Services;
 using BankingControlPanel.Domain.Enums;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Domain.ValueObjects;
-using BankingControlPanel.Infrastructure.Repositories;
 using BankingControlPanel.Interfaces.Repositories;
 using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
@@ -14,13 +14,25 @@ namespace BankingControlPanel.Application.UnitTests.ServicesUnitTests
     public class ClientServiceTests
     {
         private readonly Mock<IClientRepository> _mockClientRepository= new();
+        private readonly Mock<ISearchCriteriaService> _mockSearchCriteriaService= new();
+        private readonly Mock<ICacheService> _mockCacheService= new();
         private readonly Mock<IMapper> _mapper =new();
         private readonly IClientService _clientService;
         
 
         public ClientServiceTests()
         {
-            _clientService = new ClientService(_mockClientRepository.Object,_mapper.Object);
+            _clientService = new ClientService(_mockClientRepository.Object,_mockSearchCriteriaService.Object, _mockCacheService.Object,GetMapper());
+        }
+
+        private static IMapper GetMapper()
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
+            });
+            var mapper = configuration.CreateMapper();
+            return mapper;
         }
 
         [Fact]
@@ -35,28 +47,67 @@ namespace BankingControlPanel.Application.UnitTests.ServicesUnitTests
             // Assert
             VerifyAddClientInRepoCalledOnce(client);
         }
-
-
+        
         [Fact]
-        public void GetAllClients_ShouldReturnClients_WhenClientsExist()
+        public async Task GetClientsAsync_ShouldReturnCachedClients_WhenCacheHasData()
         {
             // Arrange
-            var clients = new List<Client>
+            var cacheKey = "Clients_123_John_IdAsc_1_10";
+            var cachedClients = new List<ClientDto>
             {
-                new Client { FirstName = "John", LastName = "Doe" },
-                new Client { FirstName = "Jane", LastName = "Smith" }
+                new ClientDto { FirstName = "John", LastName = "Doe" }
             };
 
-            _mockClientRepository.Setup(repo => repo.GetClients(It.IsAny<string>(),It.IsAny<string>(),It.IsAny<int>(),It.IsAny<int>())).Returns(clients);
+            _mockCacheService.Setup(cache => cache.GetFromCacheAsync<IEnumerable<ClientDto>>(cacheKey))
+                .ReturnsAsync(cachedClients);
 
             // Act
-            var result =  _clientService.GetClients("dummeyFilter","dummySort",0,10);
+            var result = await _clientService.GetClients("John", "IdAsc", 1, 10, "123");
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(2, result.Count());
+            Assert.Single(result);
+            Assert.Equal("John", result.First().FirstName);
+            _mockClientRepository.Verify(repo => repo.GetClients(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
+            _mockCacheService.Verify(cache => cache.Set(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+            _mockSearchCriteriaService.Verify(service => service.SaveSearchCriteriaAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
+        [Fact]
+        public async Task GetClientsAsync_ShouldFetchAndCacheClients_WhenCacheHasNoData()
+        {
+            // Arrange
+            var cacheKey = "Clients_123_John_IdAsc_1_10";
+            var clientsFromRepo = new List<Client>
+            {
+                new Client { FirstName = "John", LastName = "Doe" }
+            };
+            var clientDtos = new List<ClientDto>
+            {
+                new ClientDto { FirstName = "John", LastName = "Doe" }
+            };
+
+            _mockCacheService.Setup(cache => cache.GetFromCacheAsync<IEnumerable<ClientDto>>(cacheKey))
+                .ReturnsAsync((IEnumerable<ClientDto>)null);
+
+            _mockClientRepository.Setup(repo => repo.GetClients("John", "IdAsc", 1, 10))
+                .Returns(clientsFromRepo);
+
+            _mapper.Setup(m => m.Map<IEnumerable<ClientDto>>(clientsFromRepo))
+                .Returns(clientDtos);
+
+            // Act
+            var result = await _clientService.GetClients("John", "IdAsc", 1, 10, "123");
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.Equal("John", result.First().FirstName);
+            _mockClientRepository.Verify(repo => repo.GetClients("John", "IdAsc", 1, 10), Times.Once);
+            _mockCacheService.Verify(cache => cache.Set(cacheKey, It.IsAny<IEnumerable<ClientDto>>()), Times.Once);
+            _mockSearchCriteriaService.Verify(service => service.SaveSearchCriteriaAsync("John_IdAsc_1_10", "123"), Times.Once);
+        }
+        
         private static ClientDto WithClientDto(Client client)
         {
             return new ClientDto()
@@ -96,7 +147,7 @@ namespace BankingControlPanel.Application.UnitTests.ServicesUnitTests
             _mockClientRepository.Verify(repo => repo.AddClient(It.Is<Client>(
                 c => c.FirstName == client.FirstName &&
                      c.LastName == client.LastName &&
-                     c.Email == client.Email &&
+                     c.Email.Value == client.Email.Value &&
                      c.PersonalId.Value == client.PersonalId.Value &&
                      c.MobileNumber == client.MobileNumber &&
                      c.Gender == client.Gender &&

@@ -4,30 +4,24 @@ using Microsoft.Extensions.Caching.Memory;
 namespace BankingControlPanel.Infrastructure.Services;
 
 
-public class MemoryCacheService : ICacheService
+public class MemoryCacheService(IMemoryCache memoryCache) : ICacheService
 {
-    private readonly IMemoryCache _memoryCache;
-
-    public MemoryCacheService(IMemoryCache memoryCache)
+    public async Task<T> GetFromCacheAsync<T>(string cacheKey)
     {
-        _memoryCache = memoryCache;
-    }
-
-    public async Task<T> GetOrAddAsync<T>(string cacheKey, Func<Task<T>> factory)
-    {
-        if (!_memoryCache.TryGetValue(cacheKey, out T cacheEntry))
+        if (memoryCache.TryGetValue(cacheKey, out T cacheEntry))
         {
-            cacheEntry = await factory();
-            var cacheEntryOptions = new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromMinutes(10)); // Adjust expiration as needed
-
-            _memoryCache.Set(cacheKey, cacheEntry, cacheEntryOptions);
+            return await Task.FromResult(cacheEntry);
         }
-        return cacheEntry;
+        
+        // Return default value if not found
+        return await Task.FromResult(default(T));
     }
 
-    public void Remove(string cacheKey)
+    public void Set<T>(string cacheKey, T item)
     {
-        _memoryCache.Remove(cacheKey);
+        memoryCache.Set(cacheKey, item, new MemoryCacheEntryOptions
+        {
+            SlidingExpiration = TimeSpan.FromMinutes(10)
+        });
     }
 }
