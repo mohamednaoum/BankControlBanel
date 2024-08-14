@@ -12,22 +12,24 @@ This project It uses SQL Server as the database and Entity Framework Core for OR
 |   |   |-- Controllers - Handles HTTP requests, routing them to service layers.
 |   |   |-- Helpers - Provides utilities to assist controllers and other parts of the API.
 |   |   |-- Program.cs - Entrypoint for setting up a web host and running the application.
+|   |   |-- Middlewares
 |   |   |-- Startup.cs - Configures services and the application's request pipeline.
 |   |-- /BankingControlPanel.Application
+|   |   |--Interfaces
+|   |       |-- Repositories - Interfaces for data access layers.
+|   |       |-- Services - Interfaces for application service layers.
 |   |   |-- Services - Core services implementing the application logic.
 |   |   |-- Mapper - Maps data entities to DTOs and vice versa.
 |   |-- /BankingControlPanel.Domain
 |   |   |-- Models - Represents data and business rules.
 |   |   |-- Enums - Enumerations to support models with static lists of values.
 |   |   |-- ValueObjects - Encapsulates small pieces of domain logic.
+|   |   |-- Exceptions
 |   |-- /BankingControlPanel.Infrastructure
 |   |   |-- Data - Database contexts and data configurations.
 |   |   |-- Migrations - Database migration scripts for deployment and updates.
 |   |   |-- Repositories - Data access layers that communicate with databases.
 |   |   |-- Services - Implements infrastructure-bound services like caching.
-|   |-- /BankingControlPanel.Interfaces
-|   |   |-- Repositories - Interfaces for data access layers.
-|   |   |-- Services - Interfaces for application service layers.
 |-- /tests
 |   |-- /BankingControlPanel.UnitTests
 |   |   |-- MapperTests - Tests for the data mapping functionalities.
