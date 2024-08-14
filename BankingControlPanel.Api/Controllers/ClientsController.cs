@@ -1,4 +1,5 @@
 using BankingControlPanel.Api.Helpers;
+using BankingControlPanel.Application.Services;
 using BankingControlPanel.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +10,28 @@ namespace BankingControlPanel.Api.Controllers
     [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
-    public class ClientsController(IClientService clientService) : ControllerBase
+    public class ClientsController : ControllerBase
     {
+        private readonly IClientService _clientService;
+        private readonly ISearchCriteriaService _searchCriteriaService;
+
+        public ClientsController(IClientService clientService ,ISearchCriteriaService searchCriteriaService)
+        {
+            _clientService = clientService;
+            _searchCriteriaService = searchCriteriaService;
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetClients([FromQuery] string filter, [FromQuery] string sort, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var clients = await clientService.GetClients(filter, sort, page, pageSize, User.GetUserId()!);
+            var clients = await _clientService.GetClients(filter, sort, page, pageSize, User.GetUserId()!);
             return Ok(clients);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetClientById(int id)
         {
-            var client = clientService.GetClientById(id);
+            var client = _clientService.GetClientById(id);
             if (client == null)
             {
                 return NotFound();
@@ -32,28 +42,28 @@ namespace BankingControlPanel.Api.Controllers
         [HttpPost]
         public IActionResult AddClient([FromBody] ClientDto clientDto)
         {
-            clientService.AddClientAsync(clientDto);
+            _clientService.AddClientAsync(clientDto);
             return CreatedAtAction(nameof(GetClientById), new { id = clientDto.PersonalId }, clientDto);
         }
 
         [HttpPut("{id}")]
         public IActionResult UpdateClient(int id, [FromBody] ClientDto clientDto)
         {
-            clientService.UpdateClient(id, clientDto);
+            _clientService.UpdateClient(id, clientDto);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteClient(int id)
         {
-            clientService.DeleteClient(id);
+            _clientService.DeleteClient(id);
             return NoContent();
         }
 
         [HttpGet("search-parameters")]
-        public IActionResult GetLastSearchParameters([FromQuery] int count = 3)
+        public async Task<IActionResult> GetLastSearchParameters([FromQuery] int count = 3)
         {
-            var parameters = clientService.GetLastSearchParameters(count);
+            var parameters = await _searchCriteriaService.GetLastSearchCriteriasAsync(count,User.GetUserId()!);
             return Ok(parameters);
         }
     }

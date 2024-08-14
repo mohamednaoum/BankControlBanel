@@ -1,3 +1,5 @@
+###
+
 # Banking Control Panel API
 
 ###
@@ -97,3 +99,8 @@ Content-Type: application/json
 # group: Clients
 # @name Delete Client
 DELETE http://localhost:5147/api/clients/{{id_2}}
+
+
+### 
+GET http://localhost:5147/api/clients/search-parameters?count=3
+Content-Type: application/json

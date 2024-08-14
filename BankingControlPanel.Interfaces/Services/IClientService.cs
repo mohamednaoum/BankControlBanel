@@ -9,5 +9,4 @@ public interface IClientService
     Task AddClientAsync(ClientDto clientDto);
     void UpdateClient(int id, ClientDto clientDto);
     void DeleteClient(int id);
-    IEnumerable<string> GetLastSearchParameters(int count);
 }
