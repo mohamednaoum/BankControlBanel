@@ -2,16 +2,16 @@
 
 ## Overview
 
-This project It uses SQL Server as the database and Entity Framework Core for ORM. This guide provides instructions for setting up the database on a Mac using Docker and DBeaver and managing migrations with Entity Framework Core.
+This project uses SQL Server as the database and Entity Framework Core for ORM. This guide provides instructions for setting up the database on a Mac using Docker and DBeaver and managing migrations with Entity Framework Core.
 
 ## Project Structure
 ````
 /BankingControlPanel
 |-- /src
-|   |-- /BankingControlPanel.Api
+|   |-- /BankingControlPanel.API
 |   |   |-- Controllers - Handles HTTP requests, routing them to service layers.
 |   |   |-- Helpers - Provides utilities to assist controllers and other parts of the API.
-|   |   |-- Program.cs - Entrypoint for setting up a web host and running the application.
+|   |   |-- Program.cs - Entrypoint is used to set up a web host and run the application.
 |   |   |-- Middlewares
 |   |   |-- Startup.cs - Configures services and the application's request pipeline.
 |   |-- /BankingControlPanel.Application
