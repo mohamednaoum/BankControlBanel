@@ -42,7 +42,7 @@ namespace BankingControlPanel.Application.UnitTests.ServicesUnitTests
             var client = ValidClient();
             
             // Act
-            await _clientService.AddClientAsync(WithClientDto(client));
+            _clientService.AddClient(WithClientDto(client));
 
             // Assert
             VerifyAddClientInRepoCalledOnce(client);
@@ -62,12 +62,12 @@ namespace BankingControlPanel.Application.UnitTests.ServicesUnitTests
                 .ReturnsAsync(cachedClients);
 
             // Act
-            var result = await _clientService.GetClients("John", "IdAsc", 1, 10, "123");
+            var result = await _clientService.GetClientsAsync("John", "IdAsc", 1, 10, "123");
 
             // Assert
             Assert.NotNull(result);
-            Assert.Single(result);
-            Assert.Equal("John", result.First().FirstName);
+            Assert.Single(result.Value);
+            Assert.Equal("John", result.Value.First().FirstName);
             _mockClientRepository.Verify(repo => repo.GetClients(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
             _mockCacheService.Verify(cache => cache.Set(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
             _mockSearchCriteriaService.Verify(service => service.SaveSearchCriteriaAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
@@ -97,12 +97,12 @@ namespace BankingControlPanel.Application.UnitTests.ServicesUnitTests
                 .Returns(clientDtos);
 
             // Act
-            var result = await _clientService.GetClients("John", "IdAsc", 1, 10, "123");
+            var result = await _clientService.GetClientsAsync("John", "IdAsc", 1, 10, "123");
 
             // Assert
             Assert.NotNull(result);
-            Assert.Single(result);
-            Assert.Equal("John", result.First().FirstName);
+            Assert.Single(result.Value);
+            Assert.Equal("John", result.Value.First().FirstName);
             _mockClientRepository.Verify(repo => repo.GetClients("John", "IdAsc", 1, 10), Times.Once);
             _mockCacheService.Verify(cache => cache.Set(cacheKey, It.IsAny<IEnumerable<ClientDto>>()), Times.Once);
             _mockSearchCriteriaService.Verify(service => service.SaveSearchCriteriaAsync("John_IdAsc_1_10", "123"), Times.Once);

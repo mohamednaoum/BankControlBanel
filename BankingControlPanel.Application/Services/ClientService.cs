@@ -1,5 +1,6 @@
 using AutoMapper;
 using BankingControlPanel.Application.Interfaces.Repositories;
+using BankingControlPanel.Domain.Exceptions;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
@@ -8,23 +9,32 @@ namespace BankingControlPanel.Application.Services;
 
 public class ClientService(IClientRepository clientRepository, ISearchCriteriaService searchCriteriaService, ICacheService cacheService ,IMapper mapper) : IClientService
 {
-    public async Task<IEnumerable<ClientDto>> GetClients(string filter, string sort, int page, int pageSize, string userId)
+    public async Task<Result<IEnumerable<ClientDto>>> GetClientsAsync(string filter, string sort, int page, int pageSize, string userId)
     {
-        var cacheKey = GenerateCacheKey(filter, sort, page, pageSize, userId);
-
-        var cachedClients = await GetCachedClientsAsync(cacheKey);
-        if (cachedClients.Any())
+        try
         {
-            return cachedClients;
+            var cacheKey = GenerateCacheKey(filter, sort, page, pageSize, userId);
+
+            var cachedClients = await GetCachedClientsAsync(cacheKey);
+            if (cachedClients != null && cachedClients.Any())
+            {
+                return Result<IEnumerable<ClientDto>>.Success(cachedClients);
+            }
+
+            var clients = clientRepository.GetClients(filter, sort, page, pageSize);
+            var clientDtos = mapper.Map<IEnumerable<ClientDto>>(clients);
+
+            SaveClientsToCache(cacheKey, clientDtos);
+            await searchCriteriaService.SaveSearchCriteriaAsync($"{filter}_{sort}_{page}_{pageSize}", userId);
+
+            return Result<IEnumerable<ClientDto>>.Success(clientDtos);
+
         }
-
-        var clients = clientRepository.GetClients(filter, sort, page, pageSize);
-        var clientDtos = mapper.Map<IEnumerable<ClientDto>>(clients);
-
-        SaveClientsToCache(cacheKey, clientDtos);
-        await searchCriteriaService.SaveSearchCriteriaAsync($"{filter}_{sort}_{page}_{pageSize}", userId);
-
-        return clientDtos;
+        catch (Exception e)
+        {
+            return Result<IEnumerable<ClientDto>>.Failure(e.Message);
+        }
+       
     }
 
     private string GenerateCacheKey(string filter, string sort, int page, int pageSize, string userId)
@@ -35,7 +45,7 @@ public class ClientService(IClientRepository clientRepository, ISearchCriteriaSe
     private async Task<IEnumerable<ClientDto>> GetCachedClientsAsync(string cacheKey)
     {
         var cachedClients = await cacheService.GetFromCacheAsync<IEnumerable<ClientDto>>(cacheKey);
-        return cachedClients ?? Enumerable.Empty<ClientDto>();
+        return cachedClients;
     }
 
     private void SaveClientsToCache(string cacheKey, IEnumerable<ClientDto> clientDtos)
@@ -45,17 +55,19 @@ public class ClientService(IClientRepository clientRepository, ISearchCriteriaSe
     }
 
 
-    public ClientDto GetClientById(int id)
+    public Result<ClientDto> GetClientByIdAsync(int id)
     {
-        var client = clientRepository.GetClientById(id);
-        return mapper.Map<ClientDto>(client);
+        var client =  clientRepository.GetClientById(id);
+        if (client == null) throw new ClientNotFoundException(id.ToString());
+
+        var clientDto = mapper.Map<ClientDto>(client);
+        return Result<ClientDto>.Success(clientDto);
     }
 
-    public Task AddClientAsync(ClientDto clientDto)
+    public void AddClient(ClientDto clientDto)
     {
         var client = mapper.Map<Client>(clientDto);
         clientRepository.AddClient(client);
-        return Task.CompletedTask;
     }
 
     public void UpdateClient(int id, ClientDto clientDto)

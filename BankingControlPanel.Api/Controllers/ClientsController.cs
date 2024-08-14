@@ -24,25 +24,25 @@ namespace BankingControlPanel.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetClients([FromQuery] string filter, [FromQuery] string sort, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var clients = await _clientService.GetClients(filter, sort, page, pageSize, User.GetUserId()!);
+            var clients = await _clientService.GetClientsAsync(filter, sort, page, pageSize, User.GetUserId()!);
             return Ok(clients);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetClientById(int id)
         {
-            var client = _clientService.GetClientById(id);
-            if (client == null)
+            var client = _clientService.GetClientByIdAsync(id);
+            if (!client.IsSuccess)
             {
                 return NotFound();
             }
-            return Ok(client);
+            return Ok(client.Value);
         }
 
         [HttpPost]
         public IActionResult AddClient([FromBody] ClientDto clientDto)
         {
-            _clientService.AddClientAsync(clientDto);
+            _clientService.AddClient(clientDto);
             return CreatedAtAction(nameof(GetClientById), new { id = clientDto.PersonalId }, clientDto);
         }
 
