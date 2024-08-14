@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BankingControlPanel.Api.Middlewares;
 using BankingControlPanel.Application.Mapper;
 using BankingControlPanel.Application.Services;
 using BankingControlPanel.Domain.Models;
@@ -58,7 +59,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
 
 app.UseAuthentication();
