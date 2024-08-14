@@ -1,6 +1,6 @@
+using BankingControlPanel.Application.Interfaces.Repositories;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Infrastructure.Data;
-using BankingControlPanel.Interfaces.Repositories;
 
 namespace BankingControlPanel.Infrastructure.Repositories;
 

@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BankingControlPanel.Application\BankingControlPanel.Application.csproj" />
+      <ProjectReference Include="..\BankingControlPanel.Infrastructure\BankingControlPanel.Infrastructure.csproj" />
       <ProjectReference Include="..\BankingControlPanel.Shared\BankingControlPanel.Shared.csproj" />
     </ItemGroup>
 

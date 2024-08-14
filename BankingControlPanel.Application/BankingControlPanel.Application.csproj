@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BankingControlPanel.Domain\BankingControlPanel.Domain.csproj" />
-      <ProjectReference Include="..\BankingControlPanel.Infrastructure\BankingControlPanel.Infrastructure.csproj" />
       <ProjectReference Include="..\BankingControlPanel.Shared\BankingControlPanel.Shared.csproj" />
     </ItemGroup>
 
@@ -16,6 +15,10 @@
       <PackageReference Include="AutoMapper" Version="13.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.7" />
       <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Interfaces\" />
     </ItemGroup>
 
 </Project>

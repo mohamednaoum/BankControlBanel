@@ -1,6 +1,6 @@
 using BankingControlPanel.Domain.Models;
 
-namespace BankingControlPanel.Interfaces.Repositories;
+namespace BankingControlPanel.Application.Interfaces.Repositories;
 
 public interface ISearchCriteriaRepository
 {

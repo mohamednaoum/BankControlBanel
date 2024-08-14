@@ -1,10 +1,10 @@
 using AutoMapper;
+using BankingControlPanel.Application.Interfaces.Repositories;
 using BankingControlPanel.Application.Mapper;
 using BankingControlPanel.Application.Services;
 using BankingControlPanel.Domain.Enums;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Domain.ValueObjects;
-using BankingControlPanel.Interfaces.Repositories;
 using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
 using Moq;

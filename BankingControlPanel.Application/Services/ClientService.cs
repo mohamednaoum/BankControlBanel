@@ -1,6 +1,6 @@
 using AutoMapper;
+using BankingControlPanel.Application.Interfaces.Repositories;
 using BankingControlPanel.Domain.Models;
-using BankingControlPanel.Interfaces.Repositories;
 using BankingControlPanel.Interfaces.Services;
 using BankingControlPanel.Shared.Dtos;
 

@@ -1,5 +1,5 @@
+using BankingControlPanel.Application.Interfaces.Repositories;
 using BankingControlPanel.Domain.Models;
-using BankingControlPanel.Interfaces.Repositories;
 using BankingControlPanel.Interfaces.Services;
 
 namespace BankingControlPanel.Application.Services;

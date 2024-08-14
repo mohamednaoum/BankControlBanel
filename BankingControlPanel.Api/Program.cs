@@ -1,13 +1,13 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BankingControlPanel.Api.Middlewares;
+using BankingControlPanel.Application.Interfaces.Repositories;
 using BankingControlPanel.Application.Mapper;
 using BankingControlPanel.Application.Services;
 using BankingControlPanel.Domain.Models;
 using BankingControlPanel.Infrastructure.Data;
 using BankingControlPanel.Infrastructure.Repositories;
 using BankingControlPanel.Infrastructure.Services;
-using BankingControlPanel.Interfaces.Repositories;
 using BankingControlPanel.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
